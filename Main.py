@@ -1,41 +1,47 @@
 import os
 
-from objects.FunctionalDependency import FunctionalDependency, parse_dependency_string
-from objects.Relation import Relation, parse_relation_string
-from routines.Closure import attribute_closure
-
+from routines.BCNF import *
 
 input_directory_path = "./input"
+output_directory_path = "./output"
 
 
-def create_relation_from_input_file(file: str) -> Relation:
+def create_relation_from_input_file(file: str):
     file_handle = open(input_directory_path + '/' + file)
     lines = [line.rstrip() for line in file_handle]
 
-    base_relation = parse_relation_string(lines.pop(0))
+    relations = list()
+    all_relation_info = list()
+    relation_index = 0
+    for line in lines:
+        if line.find("(") > -1 and line.find(")") > -1:
+            all_relation_info.append(list())
+            all_relation_info[relation_index].append(line)
+            relation_index += 1
+        elif line.find("->") > -1:
+            all_relation_info[relation_index - 1].append(line)
 
-    fds = set()
-    for fd_info in lines:
-        fds.add(parse_dependency_string(fd_info))
-    base_relation.fds = fds
+    for relation_info in all_relation_info:
+        relations.append(parse_relation_info(relation_info))
+
+    for r in relations:
+        for line in r.to_writeable_strings():
+            print(line)
+        print()
+
+    decomposition = set()
+    decompose_to_bcnf(relations[0], decomposition)
+    for r in decomposition:
+        for line in r.to_writeable_strings():
+            print(line)
+        print()
 
     file_handle.close()
-    return base_relation
-
-
-def print_relation(r: Relation) -> None:
-    print(r.to_string())
-    for fd in r.fds:
-        print(fd.to_string())
 
 
 if __name__ == '__main__':
-    file_names = os.listdir(input_directory_path)
+    # file_names = os.listdir(input_directory_path)
+    create_relation_from_input_file("test-bcnf-decomposition-one-relation.txt")
 
-    relation = create_relation_from_input_file("test-relation-one-key")
-    print(relation.to_string())
-    for fd in relation.fds:
-        print(fd.to_string())
-    print(f"ABE+ = {attribute_closure({'A', 'B', 'E'}, relation.fds)}")
 
 

@@ -1,0 +1,10 @@
+Employees(ssn, name, lot)
+ssn->name,lot
+
+Departments(did, dname, budget)
+did->dname,budget
+dname->budget
+
+R(S, B, D, C)
+S->C
+C->S

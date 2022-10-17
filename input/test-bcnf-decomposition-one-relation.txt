@@ -1,0 +1,5 @@
+Contracts(C,S,J,D,P,Q,V)
+C->C,S,J,D,P,Q,V
+J,P->C
+S,D->P
+J->S
