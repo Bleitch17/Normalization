@@ -41,7 +41,7 @@ def create_relation_from_input_file(file: str):
 
 if __name__ == '__main__':
     # file_names = os.listdir(input_directory_path)
-    create_relation_from_input_file("test-bcnf-decomposition-one-relation.txt")
+    create_relation_from_input_file("bcnf-project-relations.txt")
 
 
 

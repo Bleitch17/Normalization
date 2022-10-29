@@ -1,0 +1,12 @@
+References(appid, name, email, phone_num, letter)
+appid,email->phone_num,letter,name
+email->name
+
+Authorities(authid, name, email, signature, orgid)
+authid->name,email,signature,orgid
+signature->authid,name,email,orgid
+email->name
+
+Reviewer(uid, email, name, orgid)
+uid->email,name,orgid
+email->name

@@ -11,6 +11,12 @@ def is_super_key(candidate: set[str], attributes: set[str], fds: set[FunctionalD
 
 def minimal_keys(attributes: set[str], fds: set[FunctionalDependency]) -> set[frozenset[str]]:
     keys = set()
+
+    # if no fds: all attributes must be the key:
+    if len(fds) == 0:
+        keys.add(frozenset(attributes))
+        return keys
+
     lhs_attributes = set()
     rhs_attributes = set()
     for fd in fds:

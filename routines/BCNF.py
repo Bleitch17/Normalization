@@ -16,6 +16,8 @@ def decompose_to_bcnf(relation: Relation, decomposition: set[Relation]) -> None:
                 relation.attributes - fd.rhs,
                 filter_fds(relation.attributes - fd.rhs, relation.fds)
             )
+            # for f in filter_fds(relation.attributes - fd.rhs, relation.fds):
+            #     print(f.to_string())
             lhs_and_rhs_relation = Relation(
                 relation.name + "-BCNF",
                 fd.lhs | fd.rhs,
@@ -30,9 +32,9 @@ def decompose_to_bcnf(relation: Relation, decomposition: set[Relation]) -> None:
     return
 
 
-def filter_fds(attributes: set[str], fds: set[FunctionalDependency]) -> set[FunctionalDependency]:
+def filter_fds(relevant_attributes: set[str], fds: set[FunctionalDependency]) -> set[FunctionalDependency]:
     relevant_fds = set()
     for fd in fds:
-        if (fd.lhs | fd.rhs).issubset(attributes):
+        if (fd.lhs | fd.rhs).issubset(relevant_attributes):
             relevant_fds.add(fd)
     return relevant_fds
